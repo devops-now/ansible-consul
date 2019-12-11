@@ -1,0 +1,15 @@
+version: 1.4.1
+arch: linux_amd64
+
+# Paths
+bin_dir: /usr/local/bin
+etc_dir: /usr/local/etc/consul.d
+systemd_dir: /usr/local/lib/systemd/system
+data_dir: /var/local/consul
+
+# System
+user: consul
+group: consul
+
+# Consul configuration
+# ...

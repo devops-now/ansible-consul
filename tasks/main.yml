@@ -1,0 +1,20 @@
+- name: get latest release
+  uri:
+    url: https://api.github.com/repos/hashicorp/consul/releases/latest
+  register: latest_release
+  when: version == "latest"
+
+- name: Download Consul
+  unarchive:
+    src: https://releases.hashicorp.com/consul/{{ version }}/consul_{{ version }}_{{ arch }}.zip
+    dest: "{{ install_dir }}"
+    mode: 0755
+    remote_src: yes
+
+- name: Create user for Consul
+  user:
+    name: consul
+    group: consul
+    home: /etc/consul.d
+    shell: /bin/false
+    system: yes
