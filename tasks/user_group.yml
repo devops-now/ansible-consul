@@ -1,0 +1,15 @@
+- name: create group for Consul
+  group:
+    name: "{{ consul_group }}"
+    system: yes
+    state: present
+
+- name: create user for Consul
+  user:
+    name: "{{ consul_user }}"
+    group: "{{ consul_group }}"
+    create_home: no
+    home: "{{ consul_data_dir }}"
+    shell: /sbin/nologin
+    system: yes
+    state: present

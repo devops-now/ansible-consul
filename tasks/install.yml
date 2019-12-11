@@ -1,0 +1,43 @@
+- name: get latest consul version
+  shell: >
+    curl -s 'https://releases.hashicorp.com/consul/' |
+    sed -n 's#.*href="/consul/\([0-9]*\.[0-9]*\.[0-9]*\)/.*#\1#p' |
+    head -1
+  args:
+    warn: no
+  register: consul_latest_version
+  when: consul_version == "latest"
+
+- name: check if Consul is already installed
+  stat:
+    path: "{{ consul_bin_dir }}/consul"
+  register: consul_binary_path
+
+- name: get version of the installed Consul
+  shell: >
+    /usr/local/bin/consul --version |
+    sed -n 's/Consul v\(.*\)/\1/p'
+  register: consul_current_version
+  when: consul_binary_path.stat.exists
+
+- name: download Consul with latest version
+  unarchive:
+    src: https://releases.hashicorp.com/consul/{{ consul_latest_version.stdout }}/consul_{{ consul_latest_version.stdout }}_{{ consul_arch }}.zip
+    dest: "{{ consul_bin_dir }}"
+    mode: "0755"
+    remote_src: yes
+  when:
+    - consul_version == "latest"
+    - not consul_binary_path.stat.exists
+      or consul_current_version.stdout != consul_latest_version.stdout
+
+- name: download Consul version {{ consul_version }}
+  unarchive:
+    src: https://releases.hashicorp.com/consul/{{ consul_version }}/consul_{{ consul_version }}_{{ consul_arch }}.zip
+    dest: "{{ consul_bin_dir }}"
+    mode: "0755"
+    remote_src: yes
+  when:
+    - consul_version != "latest"
+    - not consul_binary_path.stat.exists
+      or consul_current_version.stdout != consul_version

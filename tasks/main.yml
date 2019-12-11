@@ -1,20 +1,8 @@
-- name: get latest release
-  uri:
-    url: https://api.github.com/repos/hashicorp/consul/releases/latest
-  register: latest_release
-  when: version == "latest"
+- name: Include user and group creation
+  import_tasks: user_group.yml
 
-- name: Download Consul
-  unarchive:
-    src: https://releases.hashicorp.com/consul/{{ version }}/consul_{{ version }}_{{ arch }}.zip
-    dest: "{{ install_dir }}"
-    mode: 0755
-    remote_src: yes
+- name: Include directories creation
+  import_tasks: directories.yml
 
-- name: Create user for Consul
-  user:
-    name: consul
-    group: consul
-    home: /etc/consul.d
-    shell: /bin/false
-    system: yes
+- name: Include download and install of Consul
+  import_tasks: install.yml

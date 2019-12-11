@@ -1,0 +1,28 @@
+- name: create directory {{ item.path }}
+  file:
+    path: "{{ item.path }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+    state: directory
+  loop:
+    - path: "{{ consul_bin_dir }}"
+      user: "root"
+      group: "root"
+      mode: "0755"
+    - path: "{{ consul_etc_dir }}"
+      user: "root"
+      group: "root"
+      mode: "0755"
+    - path: "{{ consul_log_dir }}"
+      user: "root"
+      group: "root"
+      mode: "0755"
+    - path: "{{ consul_systemd_dir }}"
+      user: "root"
+      group: "root"
+      mode: "0755"
+    - path: "{{ consul_data_dir }}"
+      user: "{{ consul_user }}"
+      group: "{{ consul_group }}"
+      mode: "0750"
