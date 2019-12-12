@@ -1,0 +1,15 @@
+- name: install common configuration
+  template:
+    src: consul.hcl.j2
+    dest: "{{ consul_etc_dir }}/consul.hcl"
+    owner: root
+    group: "{{ consul_group }}"
+    mode: "0640"
+
+- name: install server specific configuration
+  template:
+    src: server.hcl.j2
+    dest: "{{ consul_etc_dir }}/server.hcl"
+    owner: root
+    group: "{{ consul_group }}"
+    mode: "0640"

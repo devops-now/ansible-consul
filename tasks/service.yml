@@ -1,0 +1,13 @@
+- name: install systemd service
+  template:
+    src: consul.service.j2
+    dest: "{{ consul_systemd_dir }}/consul.service"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: start service
+  service:
+    name: consul
+    state: started
+    enabled: yes

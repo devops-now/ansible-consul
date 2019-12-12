@@ -1,0 +1,11 @@
+datacenter = "{{ consul_datacenter }}"
+data_dir = "{{ consul_data_dir }}"
+encrypt = "{{ consul_secret_key }}"
+{%- if consul_retry_join is defined and consul_retry_join != "" %}
+retry_join = [{{ consul_retry_join }}]
+{%- endif %}
+{%- if consul_raft_multiplier is defined and consul_raft_multiplier != "" %}
+performance {
+	raft_multiplier = {{ consul_raft_multiplier }}
+}
+{%- endif %}

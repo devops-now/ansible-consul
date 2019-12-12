@@ -6,3 +6,9 @@
 
 - name: Include download and install of Consul
   import_tasks: install.yml
+
+- name: Set configuration
+  import_tasks: configuration.yml
+
+- name: Start service
+  import_tasks: service.yml
